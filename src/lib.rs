@@ -1,4 +1,6 @@
 use std::env;
+use std::fs;
+use std::path::PathBuf;
 
 use zed_extension_api as zed;
 use zed_extension_api::settings::LspSettings;
@@ -6,11 +8,28 @@ use zed_extension_api::settings::LspSettings;
 struct LogosExtension;
 
 impl LogosExtension {
+    fn bundled_server_dir() -> zed::Result<PathBuf> {
+        let dir = env::temp_dir().join("logos-zed-language-server");
+        fs::create_dir_all(&dir)
+            .map_err(|err| format!("failed to create bundled language server directory: {err}"))?;
+
+        fs::write(
+            dir.join("logos-language-server.js"),
+            include_str!("../server/logos-language-server.js"),
+        )
+        .map_err(|err| format!("failed to write bundled language server script: {err}"))?;
+
+        fs::write(
+            dir.join("logos-data.js"),
+            include_str!("../server/logos-data.js"),
+        )
+        .map_err(|err| format!("failed to write bundled language server data: {err}"))?;
+
+        Ok(dir)
+    }
+
     fn logos_language_server_command(&self) -> zed::Result<zed::Command> {
-        let server_path = env::current_dir()
-            .map_err(|err| format!("failed to resolve extension directory: {err}"))?
-            .join("server")
-            .join("logos-language-server.js");
+        let server_path = Self::bundled_server_dir()?.join("logos-language-server.js");
 
         Ok(zed::Command {
             command: zed::node_binary_path()?,
