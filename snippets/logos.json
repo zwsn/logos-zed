@@ -1,0 +1,82 @@
+{
+  "Logos Constructor": {
+    "prefix": "%ctor",
+    "description": "Generate an anonymous constructor.",
+    "body": "%ctor {\n\t$0\n}"
+  },
+  "Logos Deconstructor": {
+    "prefix": "%dtor",
+    "description": "Generate an anonymous deconstructor.",
+    "body": "%dtor {\n\t$0\n}"
+  },
+  "Logos Group": {
+    "prefix": "%group",
+    "description": "Create a Logos group block.",
+    "body": "%group ${1:GroupName}\n\t$0\n%end"
+  },
+  "Logos Hook": {
+    "prefix": "%hook",
+    "description": "Create a Logos hook block.",
+    "body": "%hook ${1:ClassName}\n\t$0\n%end"
+  },
+  "Logos New": {
+    "prefix": "%new",
+    "description": "Add a new method to a hooked class or subclass.",
+    "body": "%new\n$0"
+  },
+  "Logos New With Signature": {
+    "prefix": "%new(signature)",
+    "description": "Add a new method with an explicit Objective-C type encoding.",
+    "body": "%new(${1:signature})\n$0"
+  },
+  "Logos Subclass": {
+    "prefix": "%subclass",
+    "description": "Generate a Logos subclass block.",
+    "body": "%subclass ${1:ClassName} : ${2:SuperClass}\n\t$0\n%end"
+  },
+  "Logos Property": {
+    "prefix": "%property",
+    "description": "Add a property inside %hook or %subclass.",
+    "body": "%property (${1:attributes}) ${2:Type} ${3:name};"
+  },
+  "Logos Init": {
+    "prefix": "%init",
+    "description": "Initialize the default Logos group.",
+    "body": "%init;"
+  },
+  "Logos Init With Class Substitution": {
+    "prefix": "%init(...)",
+    "description": "Initialize with class substitutions.",
+    "body": "%init([${1:ClassName}=${2:expr}]);"
+  },
+  "Logos Init Group": {
+    "prefix": "%init(group)",
+    "description": "Initialize a named Logos group.",
+    "body": "%init(${1:GroupName});"
+  },
+  "Logos Class Lookup": {
+    "prefix": "%c",
+    "description": "Resolve a class at runtime.",
+    "body": "%c(${1:ClassName})"
+  },
+  "Logos Orig": {
+    "prefix": "%orig",
+    "description": "Call the original implementation.",
+    "body": "%orig"
+  },
+  "Logos Orig With Arguments": {
+    "prefix": "%orig(...)",
+    "description": "Call the original implementation with explicit arguments.",
+    "body": "%orig(${1:args})"
+  },
+  "Logos Log": {
+    "prefix": "%log",
+    "description": "Dump method arguments to syslog.",
+    "body": "%log;"
+  },
+  "Logos Log With Arguments": {
+    "prefix": "%log(...)",
+    "description": "Dump explicit values to syslog.",
+    "body": "%log(${1:args});"
+  }
+}

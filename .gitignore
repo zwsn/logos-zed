@@ -1,0 +1,11 @@
+target/
+extension.wasm
+Cargo.lock
+.DS_Store
+
+tree-sitter-logos/node_modules/
+tree-sitter-logos/build/
+tree-sitter-logos/build-objc-cache/
+tree-sitter-logos/*.wasm
+tree-sitter-logos/*.wasm.bak
+tree-sitter-logos/.package-lock.json

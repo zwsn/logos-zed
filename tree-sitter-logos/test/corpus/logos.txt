@@ -1,0 +1,213 @@
+==================
+Hook And Constructor
+==================
+
+%hook SBApplicationController
+- (void)uninstallApplication:(SBApplication *)application {
+    %orig;
+}
+%end
+
+%ctor {
+    %init;
+}
+
+---
+
+(translation_unit
+  (logos_hook_block
+    directive: (logos_hook_directive_line)
+    (logos_hook_member
+      (implementation_definition
+        (method_definition
+          (method_type
+            (type_name
+              (primitive_type)))
+          (identifier)
+          (method_parameter
+            (method_type
+              (type_name
+                (type_identifier)
+                (abstract_pointer_declarator)))
+            (identifier))
+          (compound_statement
+            (expression_statement
+              (logos_inline_directive))))))
+    end: (logos_end_directive))
+  (logos_ctor_definition
+    directive: (logos_ctor_directive)
+    body: (compound_statement
+      (expression_statement
+        (logos_inline_directive)))))
+
+====================
+Group And Subclass
+====================
+
+%group iOS16
+%hook SBIconView
+- (void)setLabelHidden:(BOOL)hidden {
+    %log;
+    %orig(hidden);
+}
+%end
+%end
+
+%subclass MyView : UIView
+%property (nonatomic, retain) NSString *title;
+%new
+- (void)ping {
+    %log;
+}
+%end
+
+---
+
+(translation_unit
+  (logos_group_block
+    directive: (logos_group_directive_line)
+    (logos_group_member
+      (logos_hook_block
+        directive: (logos_hook_directive_line)
+        (logos_hook_member
+          (implementation_definition
+            (method_definition
+              (method_type
+                (type_name
+                  (primitive_type)))
+              (identifier)
+              (method_parameter
+                (method_type
+                  (type_name
+                    (typedefed_specifier)))
+                (identifier))
+              (compound_statement
+                (expression_statement
+                  (logos_inline_directive))
+                (expression_statement
+                  (logos_inline_directive))))))
+        end: (logos_end_directive)))
+    end: (logos_end_directive))
+  (logos_subclass_block
+    directive: (logos_subclass_directive_line)
+    (logos_subclass_member
+      (logos_property_directive_line))
+    (logos_subclass_member
+      (logos_property_directive_line))
+    (logos_subclass_member
+      (implementation_definition
+        (method_definition
+          (method_type
+            (type_name
+              (primitive_type)))
+          (identifier)
+          (compound_statement
+            (expression_statement
+              (logos_inline_directive))))))
+    end: (logos_end_directive)))
+
+=========================
+Top Level And Inline Ops
+=========================
+
+%config(generator=internal)
+%hookf(void, MSHookMessageEx, Class cls, SEL sel)
+
+%ctor {
+    Class klass = %c(MyClass);
+    %orig(klass);
+}
+
+---
+
+(translation_unit
+  (logos_top_level_directive_line)
+  (logos_top_level_directive_line)
+  (logos_ctor_definition
+    directive: (logos_ctor_directive)
+    body: (compound_statement
+      (declaration
+        type: (typedefed_specifier)
+        declarator: (init_declarator
+          declarator: (identifier)
+          value: (logos_inline_directive)))
+      (expression_statement
+        (logos_inline_directive)))))
+
+============================
+Subclass Signatures And Meta
+============================
+
+%subclass MetaView : UIView
+%new(v@:)
+- (void)ping {
+    Class meta = %c(+MetaView);
+    %orig(meta);
+}
+%end
+
+---
+
+(translation_unit
+  (logos_subclass_block
+    directive: (logos_subclass_directive_line)
+    (logos_subclass_member
+      (logos_property_directive_line))
+    (logos_subclass_member
+      (implementation_definition
+        (method_definition
+          (method_type
+            (type_name
+              (primitive_type)))
+          (identifier)
+          (compound_statement
+            (declaration
+              type: (typedefed_specifier)
+              declarator: (init_declarator
+                declarator: (identifier)
+                value: (logos_inline_directive)))
+            (expression_statement
+              (logos_inline_directive))))))
+    end: (logos_end_directive)))
+
+=========================
+Grouped Initialization
+=========================
+
+%group Legacy
+%hook OldClass
+- (id)init {
+    return %orig;
+}
+%end
+%end
+
+%ctor {
+    %init(Legacy, +OldClass=%c(OldClass));
+}
+
+---
+
+(translation_unit
+  (logos_group_block
+    directive: (logos_group_directive_line)
+    (logos_group_member
+      (logos_hook_block
+        directive: (logos_hook_directive_line)
+        (logos_hook_member
+          (implementation_definition
+            (method_definition
+              (method_type
+                (type_name
+                  (typedefed_specifier)))
+              (identifier)
+              (compound_statement
+                (return_statement
+                  (logos_inline_directive))))))
+        end: (logos_end_directive)))
+    end: (logos_end_directive))
+  (logos_ctor_definition
+    directive: (logos_ctor_directive)
+    body: (compound_statement
+      (expression_statement
+        (logos_inline_directive)))))

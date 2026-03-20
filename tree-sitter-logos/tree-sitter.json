@@ -1,0 +1,38 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "logos",
+      "camelcase": "Logos",
+      "scope": "source.logos",
+      "path": ".",
+      "file-types": ["x", "xm", "xi", "xmi"],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm",
+      "locals": "queries/locals.scm",
+      "injection-regex": "^(logos)$"
+    }
+  ],
+  "metadata": {
+    "version": "3.0.2",
+    "license": "MIT",
+    "description": "Logos grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Amaan Qureshi",
+        "email": "amaanq12@gmail.com"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/tale/logos-vscode"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}

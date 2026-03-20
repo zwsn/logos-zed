@@ -1,0 +1,21 @@
+id = "logos-zed"
+name = "Logos"
+description = "Logos language support for Zed"
+version = "0.1.0"
+schema_version = 1
+authors = ["tale"]
+repository = "https://github.com/tale/logos-vscode"
+snippets = "./snippets/logos.json"
+
+[language_servers.clangd]
+name = "clangd"
+languages = ["Logos"]
+
+[language_servers.logos_language_server]
+name = "Logos Language Server"
+languages = ["Logos"]
+
+[grammars.logos]
+repository = "file:///Users/h3r4/Desktop/logos-vscode"
+commit = "d58a0bff7d8766a0b583054a26418afd793fe168"
+path = "logos-zed/tree-sitter-logos"
