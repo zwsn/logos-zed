@@ -4,10 +4,23 @@ use zed_extension_api::settings::LspSettings;
 struct LogosExtension;
 
 impl LogosExtension {
+    fn bundled_language_server_source() -> String {
+        let server_source = include_str!("../server/logos-language-server.js").replace(
+            "const { directives, hoverByKey } = require(\"./logos-data\");\n",
+            "",
+        );
+
+        format!(
+            "const {{ directives, hoverByKey }} = (() => {{\n{}\nreturn {{ directives, hoverByKey }};\n}})();\n{}",
+            include_str!("../server/logos-data.js"),
+            server_source
+        )
+    }
+
     fn logos_language_server_command(&self) -> zed::Result<zed::Command> {
         Ok(zed::Command {
             command: zed::node_binary_path()?,
-            args: vec!["server/logos-language-server.js".to_string()],
+            args: vec!["-e".to_string(), Self::bundled_language_server_source()],
             env: Default::default(),
         })
     }
