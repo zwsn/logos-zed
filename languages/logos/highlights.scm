@@ -1,6 +1,140 @@
-; Keep language-level highlighting in sync with the bundled Logos grammar so
-; Zed does not fall back to an effectively empty query set.
-; inherits: c
+; Logos highlighting builds on top of the same C / Objective-C baseline used by
+; the installed Objective-C extension, then adds Logos-specific directives.
+
+[
+  "const"
+  "enum"
+  "extern"
+  "inline"
+  "sizeof"
+  "static"
+  "struct"
+  "typedef"
+  "union"
+  "volatile"
+] @keyword
+
+[
+  "break"
+  "case"
+  "continue"
+  "default"
+  "do"
+  "else"
+  "for"
+  "goto"
+  "if"
+  "return"
+  "switch"
+  "while"
+] @keyword.control
+
+[
+  "#define"
+  "#elif"
+  "#else"
+  "#endif"
+  "#if"
+  "#ifdef"
+  "#ifndef"
+  "#include"
+  (preproc_directive)
+] @keyword
+
+[
+  "="
+  "+="
+  "-="
+  "*="
+  "/="
+  "%="
+  "&="
+  "|="
+  "^="
+  "<<="
+  ">>="
+  "++"
+  "--"
+  "+"
+  "-"
+  "*"
+  "/"
+  "%"
+  "~"
+  "&"
+  "|"
+  "^"
+  "<<"
+  ">>"
+  "!"
+  "&&"
+  "||"
+  "=="
+  "!="
+  "<"
+  ">"
+  "<="
+  ">="
+  "->"
+  "?"
+  ":"
+] @operator
+
+[
+  "."
+  ";"
+  ","
+] @punctuation.delimiter
+
+[
+  "{"
+  "}"
+  "("
+  ")"
+  "["
+  "]"
+] @punctuation.bracket
+
+[
+  (string_literal)
+  (system_lib_string)
+  (char_literal)
+] @string
+
+(comment) @comment
+
+(number_literal) @number
+
+[
+  (true)
+  (false)
+] @boolean
+
+(null) @constant.builtin
+
+(identifier) @variable
+
+((identifier) @constant
+ (#match? @constant "^_*[A-Z][A-Z\\d_]*$"))
+
+(call_expression
+  function: (identifier) @function)
+(call_expression
+  function: (field_expression
+    field: (field_identifier) @function))
+(function_declarator
+  declarator: (identifier) @function)
+(preproc_function_def
+  name: (identifier) @function.special)
+
+(field_identifier) @property
+(statement_identifier) @label
+
+[
+  (type_identifier)
+  (primitive_type)
+  (sized_type_specifier)
+] @type
 
 [
   (logos_hook_directive_line)
@@ -37,7 +171,7 @@
   "@dynamic"
   "volatile"
   (protocol_qualifier)
-] @storageclass
+] @keyword
 
 [
   "@protocol"
