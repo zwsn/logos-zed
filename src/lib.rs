@@ -5,10 +5,10 @@ struct LogosExtension;
 
 impl LogosExtension {
     fn bundled_language_server_source() -> String {
-        let server_source = include_str!("../server/logos-language-server.js").replace(
-            "const { directives, hoverByKey } = require(\"./logos-data\");\n",
-            "",
-        );
+        let server_source = include_str!("../server/logos-language-server.js")
+            .strip_prefix("#!/usr/bin/env node\n")
+            .unwrap_or(include_str!("../server/logos-language-server.js"))
+            .replace("const { directives, hoverByKey } = require(\"./logos-data\");\n", "");
 
         format!(
             "const {{ directives, hoverByKey }} = (() => {{\n{}\nreturn {{ directives, hoverByKey }};\n}})();\n{}",
